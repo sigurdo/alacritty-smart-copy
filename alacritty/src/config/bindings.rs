@@ -118,6 +118,9 @@ pub enum Action {
     /// Store current selection into clipboard.
     Copy,
 
+    /// Copy selection and clear it, or forward the keybinding to the program if there is no selection.
+    CopyDynamic,
+
     #[cfg(not(any(target_os = "macos", windows)))]
     /// Store current selection into selection buffer.
     CopySelection,

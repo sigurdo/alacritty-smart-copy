@@ -273,6 +273,12 @@ impl<T: EventListener> Execute<T> for Action {
             Action::Copy => ctx.copy_selection(ClipboardType::Clipboard),
             #[cfg(not(any(target_os = "macos", windows)))]
             Action::CopySelection => ctx.copy_selection(ClipboardType::Selection),
+            Action::CopyDynamic => {
+                if !ctx.selection_is_empty() {
+                    ctx.copy_selection(ClipboardType::Clipboard);
+                    ctx.clear_selection();
+                }
+            },
             Action::ClearSelection => ctx.clear_selection(),
             Action::Paste => {
                 let text = ctx.clipboard_mut().load(ClipboardType::Clipboard);
@@ -1042,6 +1048,11 @@ impl<T: EventListener, A: ActionContext<T>> Processor<T, A> {
             if binding.is_triggered_by(mode, mods, &key) {
                 // Pass through the key if any of the bindings has the `ReceiveChar` action.
                 *suppress_chars.get_or_insert(true) &= binding.action != Action::ReceiveChar;
+
+                // Pass through the key if any of the bindings has the `CopyDynamic` action and the selection is empty.
+                if binding.action == Action::CopyDynamic && self.ctx.selection_is_empty() {
+                    suppress_chars = Some(false);
+                }
 
                 // Binding was triggered; run the action.
                 binding.action.clone().execute(&mut self.ctx);

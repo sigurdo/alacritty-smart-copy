@@ -10,6 +10,32 @@
        src="https://user-images.githubusercontent.com/8886672/103264352-5ab0d500-49a2-11eb-8961-02f7da66c855.png">
 </p>
 
+## About this fork
+
+This fork of alacritty adds a `CopyDynamic` action that implements "smart copy", which [was rejected back in 2018](https://github.com/alacritty/alacritty/issues/1919) for reasons I do not agree with.
+
+Relevant configuration:
+
+```yaml
+key_bindings:
+  - { key: V,        mods: Control, action: Paste            }
+  - { key: C,        mods: Control, action: CopyDynamic      }
+```
+
+and in TOML:
+
+```toml
+[[keyboard.bindings]]
+key = "V"
+mods = "Control"
+action = "Paste"
+
+[[keyboard.bindings]]
+key = "C"
+mods = "Control"
+action = "CopyDynamic"
+```
+
 ## About
 
 Alacritty is a modern terminal emulator that comes with sensible defaults, but
