@@ -299,6 +299,12 @@ impl<T: EventListener> Execute<T> for Action {
             Action::Copy => ctx.copy_selection(ClipboardType::Clipboard),
             #[cfg(not(any(target_os = "macos", windows)))]
             Action::CopySelection => ctx.copy_selection(ClipboardType::Selection),
+            Action::CopyDynamic => {
+                if !ctx.selection_is_empty() {
+                    ctx.copy_selection(ClipboardType::Clipboard);
+                    ctx.clear_selection();
+                }
+            },
             Action::ClearSelection => ctx.clear_selection(),
             Action::Paste => {
                 let text = ctx.clipboard_mut().load(ClipboardType::Clipboard);
