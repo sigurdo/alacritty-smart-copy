@@ -120,6 +120,9 @@ pub enum Action {
     /// Store current selection into clipboard.
     Copy,
 
+    /// Copy selection and clear it, or forward the keybinding to the program if there is no selection.
+    CopyDynamic,
+
     /// Store current selection into selection buffer.
     CopySelection,
 
@@ -535,11 +538,13 @@ fn common_keybindings() -> Vec<KeyBinding> {
         KeyBinding;
         "v",    ModifiersState::CONTROL | ModifiersState::SHIFT, ~BindingMode::VI;                       Action::Paste;
         "v",    ModifiersState::CONTROL | ModifiersState::SHIFT, +BindingMode::VI, +BindingMode::SEARCH; Action::Paste;
+        "v",    ModifiersState::CONTROL,                         ~BindingMode::VI;                       Action::Paste;
         "f",    ModifiersState::CONTROL | ModifiersState::SHIFT, ~BindingMode::SEARCH;                   Action::SearchForward;
         "b",    ModifiersState::CONTROL | ModifiersState::SHIFT, ~BindingMode::SEARCH;                   Action::SearchBackward;
         Insert, ModifiersState::SHIFT,                           ~BindingMode::VI;                       Action::PasteSelection;
         "c",    ModifiersState::CONTROL | ModifiersState::SHIFT;                                         Action::Copy;
         "c",    ModifiersState::CONTROL | ModifiersState::SHIFT, +BindingMode::VI, ~BindingMode::SEARCH; Action::ClearSelection;
+        "c",    ModifiersState::CONTROL,                         ~BindingMode::VI;                       Action::CopyDynamic;
         "0",    ModifiersState::CONTROL;                                                                 Action::ResetFontSize;
         "=",    ModifiersState::CONTROL;                                                                 Action::IncreaseFontSize;
         "+",    ModifiersState::CONTROL;                                                                 Action::IncreaseFontSize;

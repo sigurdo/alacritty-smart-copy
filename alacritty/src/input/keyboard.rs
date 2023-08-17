@@ -201,6 +201,11 @@ impl<T: EventListener, A: ActionContext<T>> Processor<T, A> {
                 // Pass through the key if any of the bindings has the `ReceiveChar` action.
                 *suppress_chars.get_or_insert(true) &= binding.action != Action::ReceiveChar;
 
+                // Pass through the key if any of the bindings has the `CopyDynamic` action and the selection is empty.
+                if binding.action == Action::CopyDynamic && self.ctx.selection_is_empty() {
+                    suppress_chars = Some(false);
+                }
+
                 // Binding was triggered; run the action.
                 binding.action.clone().execute(&mut self.ctx);
             }
