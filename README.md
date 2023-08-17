@@ -10,6 +10,38 @@
        src="https://user-images.githubusercontent.com/8886672/103264352-5ab0d500-49a2-11eb-8961-02f7da66c855.png">
 </p>
 
+## About this fork
+
+This fork of Alacritty lets you copy and paste with `ctrl+c` and `ctrl+v`, like in most modern Windows and Linux software. If no text is selected, `ctrl+c` sends `SIGINT` like usual. The selection is cleared when you copy with `ctrl+c`. In this way, pressing `ctrl+c` twice will always send minimum one `SIGINT`. Copying without clearing the selection can still be achieved with `ctrl+shift+c`.
+
+On the technical side, a `CopyDynamic` action is added. It copies the selected text and clears the selection. When no text is selected, the keystroke is passed through, thus causing a `SIGINT`.
+
+"Smart copy" was first propsed and rejected already [back in 2018](https://github.com/alacritty/alacritty/issues/1919) for reasons I do not agree with. In 2020, dtheodor provided a [fantastic explanation](https://github.com/alacritty/alacritty/issues/1919#issuecomment-588188924) of why smart copy is such a brilliant solution. A [pull request implementing this feature](https://github.com/alacritty/alacritty/pull/3873) was proposed by ambiso later in 2020, which was also rejected. [Their fork](https://github.com/ambiso/alacritty/tree/master) is sadly outdated now. Therefore, I created this updated forked with the same approach. I plan to keep the fork up to date for as long as I use Alacritty as my daily driver terminal emulator.
+
+The following key bindings are provided by default for Windows, Linux and BSD:
+
+```yaml
+key_bindings:
+  - { key: V, mods: Control, mode: ~Vi, action: Paste }
+  - { key: C, mods: Control, mode: ~Vi, action: CopyDynamic }
+```
+
+and in TOML (for Alacritty v13+),
+
+```toml
+[[keyboard.bindings]]
+key = "V"
+mods = "Control"
+mode = "~Vi"
+action = "Paste"
+
+[[keyboard.bindings]]
+key = "C"
+mods = "Control"
+mode = "~Vi"
+action = "CopyDynamic"
+```
+
 ## About
 
 Alacritty is a modern terminal emulator that comes with sensible defaults, but
