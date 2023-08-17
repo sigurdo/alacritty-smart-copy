@@ -6,7 +6,7 @@ if [ $# -lt 2 ]; then
     exit 1
 fi
 
-repo="alacritty/alacritty"
+repo="sigurdo/alacritty-smart-copy"
 file_path=$1
 bearer=$2
 
